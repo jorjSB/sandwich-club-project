@@ -25,18 +25,27 @@ public class JsonUtils {
             e.printStackTrace();
         }
 
-        // return new object using "opt", to avoid throwing JSONException or null if converting to JsonObject failed
-        return sandwichDetails == null ? null : new Sandwich(
-                sandwichDetails.optJSONObject("name").optString("mainName"), // String mainName
-                getStringArrayFromJsonArray(sandwichDetails.optJSONObject("name").optJSONArray("alsoKnownAs")),    //List<String> alsoKnownAs,
-                sandwichDetails.optString("placeOfOrigin"), // String placeOfOrigin,
-                sandwichDetails.optString("description"), // String description,
-                sandwichDetails.optString("image"), // String image,
-                getStringArrayFromJsonArray(sandwichDetails.optJSONArray("ingredients"))   // List<String> ingredients
-        );
+        return sandwichDetails == null ? null : setSandwichProperties(sandwichDetails);
     }
 
 
+    /**
+     Helper method
+     cooking my sandwich
+     */
+    private static Sandwich setSandwichProperties(JSONObject sandwichDetails){
+
+        Sandwich sandwich = new Sandwich();
+
+        sandwich.setMainName( sandwichDetails.optJSONObject("name").optString("mainName") );  // String mainName
+        sandwich.setAlsoKnownAs( getStringArrayFromJsonArray(sandwichDetails.optJSONObject("name").optJSONArray("alsoKnownAs")));    //List<String> alsoKnownAs,
+        sandwich.setPlaceOfOrigin( sandwichDetails.optString("placeOfOrigin") ); // String placeOfOrigin,
+        sandwich.setDescription( sandwichDetails.optString("description")); // String description,
+        sandwich.setImage( sandwichDetails.optString("image") ); // String image,
+        sandwich.setIngredients( getStringArrayFromJsonArray(sandwichDetails.optJSONArray("ingredients")));   // List<String> ingredients
+
+        return sandwich;
+    }
 
     /**
         Helper method
